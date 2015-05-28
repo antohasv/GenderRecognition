@@ -4,7 +4,7 @@ import os.path
 import csv
 import Queue
 
-ABS_PATH = "/Users/anton/PycharmProjects/CropImage/photo"
+ABS_PATH = "/Users/anton/OpenCVS/GenderRecognition/image"
 FOLDER_NAME_MAIL = "male"
 FOLDER_NAME_FEMALE = "female"
 SEPARATOR = ";"
@@ -53,6 +53,7 @@ def main():
     maleList = getListOfFiles(ABS_PATH + "/" + FOLDER_NAME_MAIL, 0)
     femaleList = getListOfFiles(ABS_PATH + "/" + FOLDER_NAME_FEMALE, 1)
     result = maleList + femaleList
+    print(result)
     writeToCsvFile(ABS_PATH + "/" + "gender.csv", result)
 
 if __name__ == "__main__":

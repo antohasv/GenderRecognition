@@ -1,6 +1,7 @@
 import cv2
 import sys
-import CropFace
+from CropFace import CropFace
+from code import GenderRecognizer
 from PIL import Image
 
 cascPath = sys.argv[1]
@@ -8,6 +9,9 @@ faceCascade = cv2.CascadeClassifier(cascPath)
 eye_cascade = cv2.CascadeClassifier(sys.argv[2])
 
 video_capture = cv2.VideoCapture(0)
+
+genderRecognizer = GenderRecognizer()
+genderRecognizer.trainingModel()
 
 isDetect = False
 eye_left = ()
