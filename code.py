@@ -2,10 +2,7 @@ import cv2 as cv
 from numpy import *
 import csv
 
-ABS_PATH = "/Users/anton/PycharmProjects/CropImage/photo"
-
-def readImage(imagePath):
-	return cv.imread(imagePath, cv.CV_LOAD_IMAGE_GRAYSCALE)
+ABS_PATH = "/Users/anton/OpenCVS/GenderRecognition/image"
 
 def readCSVFile(filePath):
     images = []
@@ -22,17 +19,36 @@ def readCSVFile(filePath):
         pass
     return (images, labels)
 
+class GenderRecognizer:
 
-data = readCSVFile(ABS_PATH + "/" + "gender.csv")
-images = []
-for image in data[0]:
-	matImg = readImage(image)
-	images.append(matImg)
-labels = data[1]
-testSample = readImage("/Users/anton/PycharmProjects/CropImage/photo/others/3.jpg")
+    def __init__(self):
+        print("Init")
 
-model = cv.createFisherFaceRecognizer()
-model.train(array(images), array(labels))
-print("Training over")
-predictedLabel = model.predict(testSample)
-print(predictedLabel)
+    def readImage(self, imagePath):
+        return cv.imread(imagePath, cv.CV_LOAD_IMAGE_GRAYSCALE)
+
+    def getData(self):
+        print("getData")
+        data = readCSVFile(ABS_PATH + "/" + "gender.csv")
+        images = []
+        for image in data[0]:
+            matImg = self.readImage(image)
+            print(matImg)
+            images.append(matImg)
+        labels = data[1]
+        return(images, labels)
+
+    def trainingModel(self):
+        print("training")
+        data = self.getData()
+        print(data)
+        self.model = cv.createFisherFaceRecognizer()
+        self.model.train(array(data[0]), array(data[1]))
+        print("Training over")
+
+    def getGender(self, imagePath):
+        print("getGender")
+        testSample = self.readImage(imagePath)
+        predictedLabel = self.model.predict(testSample)
+        print(predictedLabel)
+        return predictedLabel

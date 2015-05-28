@@ -43,10 +43,17 @@ while True:
             cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
 
         if len(faces) == 1 and len(eyes) == 2:
-            (ex, ey, ew, eh) = eyes[0]
-            eye_left = (x + ex + ew / 2, y + ey + eh / 2)
-            (ex, ey, ew, eh) = eyes[1]
-            eye_right = (x + ex + ew / 2, y + ey + eh / 2)
+            if eyes[0][0] < eyes[1][0]:
+                (ex, ey, ew, eh) = eyes[0]
+                eye_left = (x + ex + ew / 2, y + ey + eh / 2)
+                (ex, ey, ew, eh) = eyes[1]
+                eye_right = (x + ex + ew / 2, y + ey + eh / 2)
+            else:
+                (ex, ey, ew, eh) = eyes[1]
+                eye_left = (x + ex + ew / 2, y + ey + eh / 2)
+                (ex, ey, ew, eh) = eyes[0]
+                eye_right = (x + ex + ew / 2, y + ey + eh / 2)
+            
             print "Face and Eye detected"
             isDetect = True
 
