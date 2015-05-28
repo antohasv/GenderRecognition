@@ -69,6 +69,11 @@ print(eye_right)
 image = Image.open("1.jpg")
 CropFace(image, eye_left, eye_right, offset_pct=(0.3, 0.3), dest_sz=(200, 200)).save("01.jpg")
 
+if genderRecognizer.getGender("01.jpg")[0] == 0:
+    print "Man"
+else:
+    print "Woman"
+
 #Use to capture image on screen
 while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
