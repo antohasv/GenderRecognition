@@ -1,6 +1,7 @@
 import cv2
 import sys
 import CropFace
+from PIL import Image
 
 cascPath = sys.argv[1]
 faceCascade = cv2.CascadeClassifier(cascPath)
@@ -9,7 +10,8 @@ eye_cascade = cv2.CascadeClassifier(sys.argv[2])
 video_capture = cv2.VideoCapture(0)
 
 isDetect = False
-eyes = ()
+eye_left = ()
+eye_right = ()
 faces = ()
 while True:
     # Capture frame-by-frame
@@ -36,7 +38,11 @@ while True:
         for (ex, ey, ew, eh) in eyes:
             cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
 
-        if len(faces) == 1 and len(eyes):
+        if len(faces) == 1 and len(eyes) == 2:
+            (ex, ey, ew, eh) = eyes[0]
+            eye_left = (x + ex + ew / 2, y + ey + eh / 2)
+            (ex, ey, ew, eh) = eyes[1]
+            eye_right = (x + ex + ew / 2, y + ey + eh / 2)
             print "Face and Eye detected"
             isDetect = True
 
@@ -46,14 +52,11 @@ while True:
     if (cv2.waitKey(1) & 0xFF == ord('q')) or isDetect:
         break
 
-image = frame
-(ex, ey, ew, eh) = eyes[0]
-eye_left = (ex + ew / 2, ey + eh / 2)
-
-(ex, ey, ew, eh) = eyes[1]
-eye_right = (ex + ew / 2, ey + eh / 2)
-
-CropFace(image, eye_left, eye_right, offset_pct=(0.3, 0.3), dest_sz=(200, 200)).save("1.jpg")
+cv2.imwrite( "1.jpg", frame)
+print(eye_left)
+print(eye_right)
+image = Image.open("1.jpg")
+CropFace(image, eye_left, eye_right, offset_pct=(0.3, 0.3), dest_sz=(200, 200)).save("01.jpg")
 
 #Use to capture image on screen
 while True:
